@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suvidha Bazar Bakery | Order, Menu, Reservations</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--red:#9f1619;--red2:#c5272a;--cream:#f4efe7;--ink:#211f1f;--muted:#6f6f6f;--white:#fff;--shadow:0 14px 38px rgba(0,0,0,.14)}
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;background:radial-gradient(circle at 8% 8%,#fff8f1 0,transparent 25%),radial-gradient(circle at 90% 20%,#ffeef0 0,transparent 24%),var(--cream);color:var(--ink);overflow-x:hidden}
+a{text-decoration:none;color:inherit}ul{list-style:none}
+h1,h2,h3,h4{font-family:'Cinzel',serif}
+.progress{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--red),var(--red2));z-index:2000}
+header{position:fixed;top:0;left:0;width:100%;padding:1rem 5%;display:flex;justify-content:space-between;align-items:center;z-index:1200;transition:.3s}
+header:not(.scrolled) .logo,header:not(.scrolled) .nav a{color:#fff}
+header:not(.scrolled) .nav a:after{background:#fff}
+header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.logo{font-size:1.2rem;color:var(--red);font-weight:700}
+.nav{display:flex;gap:1.3rem;align-items:center}
+.nav a{font-weight:500;position:relative}
+.nav a:after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--red);transition:.2s}
+.nav a:hover:after,.nav a.active:after{width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.72rem 1.2rem;border-radius:999px;font-weight:600;border:none;cursor:pointer;transition:.2s}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 8px 22px rgba(159,22,25,.35)}
+.btn-red:hover{background:#7d1012;transform:translateY(-2px)}
+.btn-white{background:#fff;color:var(--red)}
+.ham{display:none;font-size:1.35rem;cursor:pointer}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;background:url('assets/menu/menu-cover.jpeg') center top/cover no-repeat;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(145deg,rgba(20,17,17,.35),rgba(159,22,25,.25))}
+.hero-content{position:relative;z-index:2;color:#fff;max-width:920px;padding:0 1rem}
+.brand-chip{display:inline-block;background:rgba(255,255,255,.88);color:var(--red);padding:.35rem .75rem;border-radius:999px;font-weight:700;font-size:.88rem;margin-bottom:.7rem}
+.badge{display:inline-block;padding:.43rem .95rem;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(255,255,255,.12);margin-bottom:1rem}
+.hero h1{font-size:clamp(2rem,6vw,4.2rem);line-height:1.1;margin-bottom:.6rem;opacity:0;transform:translateY(20px);animation:up .8s .2s forwards;text-shadow:0 3px 20px rgba(0,0,0,.55)}
+.hero p{font-size:clamp(1rem,2vw,1.2rem);margin-bottom:1rem;opacity:0;transform:translateY(20px);animation:up .8s .4s forwards}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;opacity:0;transform:translateY(20px);animation:up .8s .6s forwards}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+.top-info{margin-top:-38px;padding:0 5%;position:relative;z-index:5}
+.top-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;background:#fff;padding:.9rem;border-radius:16px;box-shadow:var(--shadow)}
+.top-item{background:#fff8f8;border-radius:10px;padding:.72rem}
+.top-item h4{font-size:.95rem;color:var(--red);margin-bottom:.25rem}
+.top-item p,.top-item a{font-size:.9rem;color:#333}
+.section{padding:4.8rem 5%}
+.head{text-align:center;margin-bottom:1.3rem}
+.head h2{font-size:clamp(1.6rem,4.6vw,2.7rem);color:var(--red)}
+.head p{color:var(--muted)}
+.menu-posters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.9rem}
+.poster{background:#fff;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:.2s}
+.poster:hover{transform:translateY(-5px)}
+.poster img{width:100%;aspect-ratio:3/4;object-fit:contain;object-position:center top;display:block;background:#f7f2ea}
+.poster h4{padding:.7rem .8rem;font-size:.95rem;color:#2f2f2f}
+.filters{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.filter{padding:.5rem .9rem;border:2px solid var(--red);border-radius:999px;background:transparent;color:var(--red);font-weight:600;cursor:pointer;transition:.2s}
+.filter.active,.filter:hover{background:var(--red);color:#fff}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem}
+.g-item{border-radius:12px;overflow:hidden;box-shadow:var(--shadow);position:relative;cursor:pointer}
+.g-item img{width:100%;height:220px;object-fit:cover;display:block;transition:.35s}
+.g-item:hover img{transform:scale(1.07)}
+.g-item span{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.65);color:#fff;font-size:.74rem;padding:.2rem .55rem;border-radius:999px}
+.g-item.hide{display:none}
+.reserve-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:1rem}
+.reserve-card,.contact-card{background:#fff;border-radius:14px;padding:1rem;box-shadow:var(--shadow)}
+.reserve-card h3,.contact-card h3{font-size:1.18rem;color:var(--red);margin-bottom:.6rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.fg{display:flex;flex-direction:column;gap:.28rem}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:.85rem;color:#4f4f4f}
+.fg input,.fg select,.fg textarea{padding:.72rem;border:1px solid #ddd;border-radius:9px;font-family:inherit}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--red)}
+.submit{margin-top:.6rem}
+.contact-list li{padding:.45rem 0;border-bottom:1px dashed #ececec;display:flex;justify-content:space-between;gap:.6rem}
+.contact-list li:last-child{border-bottom:none}
+.social{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
+.social a{background:#f4f4f4;padding:.45rem .65rem;border-radius:999px;font-size:.85rem}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem}
+.qr-card{background:#fff;padding:1rem;border-radius:14px;box-shadow:var(--shadow);text-align:center}
+.qr-card img{width:170px;height:170px;object-fit:contain;margin:.4rem auto}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:2500;padding:1rem}
+.lightbox.active{display:flex}
+.lightbox img{max-width:min(92vw,1000px);max-height:86vh;border-radius:10px}
+.lb-close{position:absolute;top:14px;right:18px;color:#fff;font-size:1.7rem;cursor:pointer}
+.footer{margin-top:1.6rem;background:#161616;color:#9a9a9a;padding:2rem 5% 1rem}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;margin-bottom:1rem}
+.footer h4{color:#fff;margin-bottom:.35rem}
+.copy{text-align:center;padding-top:.8rem;border-top:1px solid rgba(255,255,255,.1)}
+.toast{position:fixed;right:18px;bottom:18px;background:#1f1f1f;color:#fff;padding:.7rem .9rem;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:3000}
+.toast.show{opacity:1;transform:translateY(0)}
+.order-wrap{background:#fff;border-radius:14px;padding:1rem;box-shadow:var(--shadow)}
+.order-head{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:.8rem}
+.order-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem}
+.fcard{background:#fff8f8;border:1px solid #f0dcdc;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.fcard img{width:100%;height:150px;object-fit:cover}
+.fbody{padding:.7rem}
+.fbody h4{font-family:'Poppins',sans-serif;font-size:1rem;color:#222}
+.fbody p{font-size:.84rem;color:#666;margin:.2rem 0 .5rem}
+.frow{display:flex;justify-content:space-between;align-items:center}
+.fprice{font-weight:700;color:var(--red)}
+.cart-fab{position:fixed;right:16px;bottom:16px;background:var(--red);color:#fff;border:none;border-radius:999px;padding:.7rem 1rem;box-shadow:var(--shadow);z-index:2300;cursor:pointer}
+.cart-fab .count{background:#fff;color:var(--red);font-weight:700;border-radius:999px;padding:.1rem .45rem;margin-left:.35rem}
+.cart-panel{position:fixed;top:0;right:-420px;width:min(92vw,390px);height:100vh;background:#fff;z-index:2400;box-shadow:-8px 0 30px rgba(0,0,0,.18);display:flex;flex-direction:column;transition:.25s}
+.cart-panel.open{right:0}
+.cart-top{padding:1rem;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.cart-items{padding:.8rem;overflow:auto;flex:1}
+.citem{display:grid;grid-template-columns:1fr auto;gap:.4rem;border-bottom:1px dashed #eee;padding:.55rem 0}
+.cname{font-weight:600;font-size:.92rem}
+.cmeta{font-size:.82rem;color:#666}
+.cqty{display:flex;align-items:center;gap:.3rem}
+.cqty button{width:24px;height:24px;border:1px solid #ddd;background:#fff;border-radius:6px;cursor:pointer}
+.cart-bottom{padding:.85rem;border-top:1px solid #eee}
+.pay-modal{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;z-index:2600;padding:1rem}
+.pay-modal.open{display:flex}
+.pay-card{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:1rem;box-shadow:var(--shadow)}
+.pay-grid{display:grid;grid-template-columns:1fr 170px;gap:.8rem;align-items:start}
+.pay-grid img{width:170px;height:170px;border:1px solid #eee;border-radius:8px}
+.small{font-size:.83rem;color:#666}
+@media(max-width:768px){.pay-grid{grid-template-columns:1fr}.pay-grid img{margin:auto}}
+@media(max-width:980px){.reserve-wrap{grid-template-columns:1fr}}
+@media(max-width:768px){.nav{position:absolute;top:62px;right:0;background:#fff;width:100%;display:flex;flex-direction:column;padding:1rem 0;transform:translateY(-170%);transition:.25s;box-shadow:0 8px 20px rgba(0,0,0,.1)}.nav.active{transform:translateY(0)}.ham{display:block}.form-grid{grid-template-columns:1fr}.hero h1{font-size:2.35rem}.poster img{aspect-ratio:3/4}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header id="header">
+  <div class="logo">Suvidha Bazar Bakery</div>
+  <div class="ham" id="ham"><i class="fas fa-bars"></i></div>
+  <ul class="nav" id="nav">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#order-food">Order Food</a></li>
+    
+    <li><a href="#menu-images">Menu Images</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#reserve">Reservation</a></li>
+    <li><a href="#qr">QR Connect</a></li>
+    <li><a href="tel:+919416047176" class="btn btn-red">Order</a></li>
+  </ul>
+</header>
+<section class="hero" id="home">
+  <div class="hero-content">
+    <span class="brand-chip">Suvidha Bazar Bakery</span>
+    <span class="badge">Free Home Delivery</span>
+    <h1>The Name of Quality</h1>
+    <p>Suvidha Bazar Bakery - Pizza, Chinese, Bakery, Shakes, Desserts, Party Orders, Birthday Bookings.</p>
+    <div class="hero-actions">
+      <a class="btn btn-red" href="tel:+919416047176"><i class="fas fa-phone"></i> 94160 47176</a>
+      <a class="btn btn-white" href="tel:+918708122228"><i class="fas fa-phone"></i> 87081 22228</a>
+      <a class="btn btn-white" href="#reserve"><i class="fas fa-calendar-check"></i> Book Table</a>
+    </div>
+  </div>
+</section>
+<section class="top-info">
+  <div class="top-grid" data-aos="fade-up">
+    <div class="top-item"><h4>Order Numbers</h4><p><a href="tel:+919416047176">+91 94160 47176</a><br><a href="tel:+918708122228">+91 87081 22228</a></p></div>
+    <div class="top-item"><h4>Instagram</h4><p>@Suvidha.Bazar</p></div>
+    <div class="top-item"><h4>Facebook</h4><p>Suvidha.Bazar</p></div>
+    <div class="top-item"><h4>Address</h4><p>Suvidha Bazar Bakery, Haryana (replace with exact shop address).</p></div>
+  </div>
+</section>
+<section class="section" id="order-food">
+  <div class="head" data-aos="fade-up"><h2>Order Food Online</h2><p>Add items to cart, pay by QR, then send order on WhatsApp</p></div>
+  <div class="order-wrap" data-aos="fade-up">
+    <div class="order-head">
+      <h3>Popular Items</h3>
+      <button class="btn btn-red" id="open-cart">Open Cart (<span id="cart-count-inline">0</span>)</button>
+    </div>
+    <div class="order-grid" id="order-grid">
+      <article class="fcard" data-id="1" data-name="Margherita Pizza (Small)" data-price="109"><img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=900&q=80" alt="Margherita"><div class="fbody"><h4>Margherita Pizza (Small)</h4><p>Loaded with cheese</p><div class="frow"><span class="fprice">Rs 109</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="2" data-name="Tandoori Pizza (Small)" data-price="199"><img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80" alt="Tandoori"><div class="fbody"><h4>Tandoori Pizza (Small)</h4><p>Onion, paneer, capsicum, corn</p><div class="frow"><span class="fprice">Rs 199</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="3" data-name="Tandoori Paneer Wrap" data-price="130"><img src="https://images.unsplash.com/photo-1530469912745-a215c6b256ea?auto=format&fit=crop&w=900&q=80" alt="Wrap"><div class="fbody"><h4>Tandoori Paneer Wrap</h4><p>Hot and fresh wrap</p><div class="frow"><span class="fprice">Rs 130</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="4" data-name="Veg Noodles" data-price="90"><img src="https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=900&q=80" alt="Noodles"><div class="fbody"><h4>Veg Noodles</h4><p>Chinese special</p><div class="frow"><span class="fprice">Rs 90</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="5" data-name="Oreo Shake" data-price="120"><img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=900&q=80" alt="Oreo Shake"><div class="fbody"><h4>Oreo Shake</h4><p>Italian shakes</p><div class="frow"><span class="fprice">Rs 120</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="6" data-name="Hot Chocolate Brownie" data-price="99"><img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80" alt="Brownie"><div class="fbody"><h4>Hot Chocolate Brownie</h4><p>With ice cream</p><div class="frow"><span class="fprice">Rs 99</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="7" data-name="Aloo Tikki Meal Combo" data-price="89"><img src="https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=900&q=80" alt="Combo"><div class="fbody"><h4>Aloo Tikki Meal Combo</h4><p>Burger + fries + drink</p><div class="frow"><span class="fprice">Rs 89</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+      <article class="fcard" data-id="8" data-name="Paneer Patties" data-price="15"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80" alt="Patties"><div class="fbody"><h4>Paneer Patties</h4><p>Bakery fresh</p><div class="frow"><span class="fprice">Rs 15</span><button class="btn btn-red add-cart">Add</button></div></div></article>
+    </div>
+  </div>
+</section>
+<section class="section" id="menu-images">
+  <div class="head" data-aos="fade-up"><h2>Official Menu Images</h2><p>Your actual menu posters are shown here</p></div>
+  <div class="menu-posters">
+    <div class="poster" data-aos="zoom-in"><img src="assets/menu/menu-cover.jpeg" alt="Menu cover" onerror="this.src='https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=900&q=80'"><h4>Cover / Brand Poster</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="50"><img src="assets/menu/menu-wraps.jpeg" alt="Wraps Menu" onerror="this.src='https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=900&q=80'"><h4>Wraps / Sub / Garlic</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="100"><img src="assets/menu/menu-pizza-1.jpeg" alt="Pizza menu" onerror="this.src='https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80'"><h4>Pizza Menu 1</h4></div>
+    <div class="poster" data-aos="zoom-in"><img src="assets/menu/menu-italian.jpeg" alt="Italian menu" onerror="this.src='https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=900&q=80'"><h4>Italian Drinks</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="50"><img src="assets/menu/menu-combo.jpeg" alt="Combo menu" onerror="this.src='https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=900&q=80'"><h4>Combo Offers</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="100"><img src="assets/menu/menu-chinese.jpeg" alt="Chinese menu" onerror="this.src='https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=900&q=80'"><h4>Chinese</h4></div>
+    <div class="poster" data-aos="zoom-in"><img src="assets/menu/menu-pizza-2.jpeg" alt="Pizza menu 2" onerror="this.src='https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=900&q=80'"><h4>Pizza Menu 2</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="50"><img src="assets/menu/menu-dessert.jpeg" alt="Dessert menu" onerror="this.src='https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=900&q=80'"><h4>Desserts & Doughnuts</h4></div>
+    <div class="poster" data-aos="zoom-in" data-aos-delay="100"><img src="assets/menu/menu-bakery.jpeg" alt="Bakery menu" onerror="this.src='https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=900&q=80'"><h4>Bakery Menu</h4></div>
+  </div>
+</section>
+<section class="section" id="gallery">
+  <div class="head" data-aos="fade-up"><h2>Gallery</h2><p>Cakes, parties, food, family moments</p></div>
+  <div class="filters">
+    <button class="filter active" data-cat="all">All</button>
+    <button class="filter" data-cat="cake">Cakes</button>
+    <button class="filter" data-cat="party">Party</button>
+    <button class="filter" data-cat="food">Food</button>
+  </div>
+  <div class="gallery" id="gallery-grid">
+    <div class="g-item" data-cat="cake" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?auto=format&fit=crop&w=900&q=80" alt="Birthday cake"><span>Cake</span></div>
+    <div class="g-item" data-cat="cake" data-aos="fade-up" data-aos-delay="40"><img src="https://images.unsplash.com/photo-1535141192574-5d4897c12636?auto=format&fit=crop&w=900&q=80" alt="Chocolate cake"><span>Cake</span></div>
+    <div class="g-item" data-cat="party" data-aos="fade-up" data-aos-delay="80"><img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=900&q=80" alt="Birthday party"><span>Party</span></div>
+    <div class="g-item" data-cat="party" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?auto=format&fit=crop&w=900&q=80" alt="People at party"><span>Party</span></div>
+    <div class="g-item" data-cat="food" data-aos="fade-up" data-aos-delay="40"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=80" alt="Salad and food"><span>Food</span></div>
+    <div class="g-item" data-cat="food" data-aos="fade-up" data-aos-delay="80"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=900&q=80" alt="Burger"><span>Food</span></div>
+    <div class="g-item" data-cat="food" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=900&q=80" alt="Pizza"><span>Food</span></div>
+    <div class="g-item" data-cat="cake" data-aos="fade-up" data-aos-delay="40"><img src="https://images.unsplash.com/photo-1558301211-0d8c8ddee6ec?auto=format&fit=crop&w=900&q=80" alt="Cupcakes"><span>Cake</span></div>
+    <div class="g-item" data-cat="party" data-aos="fade-up" data-aos-delay="80"><img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=900&q=80" alt="Friends eating"><span>Party</span></div>
+    <div class="g-item" data-cat="food" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=900&q=80" alt="Snacks"><span>Food</span></div>
+    <div class="g-item" data-cat="cake" data-aos="fade-up" data-aos-delay="40"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80" alt="Decorated cake"><span>Cake</span></div>
+    <div class="g-item" data-cat="party" data-aos="fade-up" data-aos-delay="80"><img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80" alt="People dinner"><span>Party</span></div>
+  </div>
+</section>
+<section class="section" id="reserve">
+  <div class="head" data-aos="fade-up"><h2>Birthday Booking & Table Reservation</h2><p>Book birthday, family table, kitty party or celebration</p></div>
+  <div class="reserve-wrap">
+    <div class="reserve-card" data-aos="fade-right">
+      <h3>Reservation Form</h3>
+      <form id="reserve-form" novalidate>
+        <div class="form-grid">
+          <div class="fg"><label>Name</label><input type="text" required placeholder="Your name"></div>
+          <div class="fg"><label>Phone</label><input type="tel" required placeholder="Phone number"></div>
+          <div class="fg"><label>Date</label><input type="date" required></div>
+          <div class="fg"><label>Time</label><input type="time" required></div>
+          <div class="fg"><label>Guests</label><input type="number" min="1" required placeholder="No. of guests"></div>
+          <div class="fg"><label>Booking Type</label><select required><option value="">Choose</option><option>Birthday Party</option><option>Table Reservation</option><option>Family Dinner</option><option>Kitty Party</option><option>Corporate Gathering</option></select></div>
+          <div class="fg full"><label>Special Request</label><textarea rows="4" placeholder="Cake theme, decoration, etc."></textarea></div>
+        </div>
+        <button class="btn btn-red submit" type="submit"><i class="fas fa-paper-plane"></i> Send Booking Request</button>
+      </form>
+    </div>
+    <div class="contact-card" data-aos="fade-left">
+      <h3>Direct Booking Details</h3>
+      <ul class="contact-list">
+        <li><span>Main Order Number</span><strong><a href="tel:+919416047176">94160 47176</a></strong></li>
+        <li><span>Alternate Number</span><strong><a href="tel:+918708122228">87081 22228</a></strong></li>
+        <li><span>Instagram</span><strong>@Suvidha.Bazar</strong></li>
+        <li><span>Facebook</span><strong>Suvidha.Bazar</strong></li>
+        <li><span>Timing</span><strong>10:00 AM - 11:00 PM</strong></li>
+      </ul>
+      <div class="social">
+        <a href="https://instagram.com/Suvidha.Bazar" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i> Facebook</a>
+        <a href="https://wa.me/919416047176" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" id="qr">
+  <div class="head" data-aos="fade-up"><h2>QR Connect</h2><p>Scan and connect instantly</p></div>
+  <div class="qr-grid">
+    <div class="qr-card" data-aos="zoom-in">
+      <h3>Instagram QR</h3>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Finstagram.com%2FSuvidha.Bazar" alt="Instagram QR">
+      <p><a href="https://instagram.com/Suvidha.Bazar" target="_blank">instagram.com/Suvidha.Bazar</a></p>
+    </div>
+    <div class="qr-card" data-aos="zoom-in" data-aos-delay="60">
+      <h3>Google Map QR</h3>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DSuvidha%2BBazar%2BBakery" alt="Google Map QR">
+      <p><a href="https://maps.google.com/?q=Suvidha+Bazar+Bakery" target="_blank">Open Location on Google Maps</a></p>
+    </div>
+    <div class="qr-card" data-aos="zoom-in" data-aos-delay="120">
+      <h3>Website QR</h3>
+      <img id="site-qr" src="" alt="Website QR">
+      <p><a id="site-link" href="#" target="_blank">Open Website</a></p>
+      <input id="site-url-input" type="text" placeholder="https://your-live-link.com" style="width:100%;padding:.55rem;border:1px solid #ddd;border-radius:8px">
+      <button class="btn btn-red" id="site-qr-btn" style="margin-top:.55rem">Generate QR</button>
+    </div>
+  </div>
+</section>
+<button class="cart-fab" id="cart-fab"><i class="fas fa-cart-shopping"></i> Cart <span class="count" id="cart-count-fab">0</span></button>
+<div class="cart-panel" id="cart-panel">
+  <div class="cart-top"><h3>Your Cart</h3><button class="btn btn-white" id="close-cart">Close</button></div>
+  <div class="cart-items" id="cart-items"></div>
+  <div class="cart-bottom">
+    <div style="display:flex;justify-content:space-between;margin-bottom:.6rem"><strong>Total</strong><strong id="cart-total">Rs 0</strong></div>
+    <button class="btn btn-red" style="width:100%" id="checkout-btn">Proceed to Payment</button>
+  </div>
+</div>
+<div class="pay-modal" id="pay-modal">
+  <div class="pay-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:.6rem"><h3>Payment & Order</h3><button class="btn btn-white" id="close-pay">Close</button></div>
+    <div class="pay-grid" style="margin-top:.6rem">
+      <div>
+        <div class="fg"><label>Name</label><input id="cust-name" type="text" placeholder="Your name"></div>
+        <div class="fg"><label>Phone</label><input id="cust-phone" type="tel" placeholder="Your phone"></div>
+        <p class="small" style="margin-top:.55rem">Scan QR and pay exact total. After payment, tap WhatsApp button and send payment screenshot.</p>
+        <p><strong id="pay-total-text">Total: Rs 0</strong></p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.55rem">
+          <button class="btn btn-red" id="wa-order-btn"><i class="fab fa-whatsapp"></i> Send Order on WhatsApp</button>
+        </div>
+      </div>
+      <img id="payment-qr" src="" alt="Payment QR">
+    </div>
+  </div>
+</div>
+<section class="section" id="admin-orders">
+  <div class="head" data-aos="fade-up"><h2>Latest Orders (Auto Saved)</h2><p>Visible when website runs through backend server</p></div>
+  <div class="order-wrap" data-aos="fade-up">
+    <div class="order-head">
+      <h3>Incoming Orders</h3>
+      <button class="btn btn-red" id="refresh-orders">Refresh</button>
+    </div>
+    <div id="orders-list" class="small">No orders loaded yet.</div>
+  </div>
+</section>
+<footer class="footer">
+  <div class="ft-grid">
+    <div><h4>Suvidha Bazar Bakery</h4><p>The Name of Quality. Fast delivery and party bookings.</p></div>
+    <div><h4>Quick Links</h4><p><a href="#menu-images">Menu Images</a> | <a href="#gallery">Gallery</a> | <a href="#reserve">Reserve</a></p></div>
+    <div><h4>Call Us</h4><p>+91 94160 47176<br>+91 87081 22228</p></div>
+  </div>
+  <p class="copy">&copy; <span id="year"></span> Suvidha Bazar Bakery</p>
+</footer>
+<div class="lightbox" id="lightbox"><span class="lb-close" id="lb-close">&times;</span><img id="lb-img" src="" alt="preview"></div>
+<div class="toast" id="toast">Request sent successfully</div>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+const header=document.getElementById('header');
+const progress=document.getElementById('progress');
+const nav=document.getElementById('nav');
+const ham=document.getElementById('ham');
+const toast=document.getElementById('toast');
+const lightbox=document.getElementById('lightbox');
+const lbImg=document.getElementById('lb-img');
+const lbClose=document.getElementById('lb-close');
+const cartPanel=document.getElementById('cart-panel');
+const cartItemsEl=document.getElementById('cart-items');
+const cartTotalEl=document.getElementById('cart-total');
+const cartFab=document.getElementById('cart-fab');
+const cartCountFab=document.getElementById('cart-count-fab');
+const cartCountInline=document.getElementById('cart-count-inline');
+const openCartBtn=document.getElementById('open-cart');
+const closeCartBtn=document.getElementById('close-cart');
+const checkoutBtn=document.getElementById('checkout-btn');
+const payModal=document.getElementById('pay-modal');
+const closePayBtn=document.getElementById('close-pay');
+const payQr=document.getElementById('payment-qr');
+const payTotalText=document.getElementById('pay-total-text');
+const waOrderBtn=document.getElementById('wa-order-btn');
+const custName=document.getElementById('cust-name');
+const custPhone=document.getElementById('cust-phone');
+const refreshOrdersBtn=document.getElementById('refresh-orders');
+const ordersList=document.getElementById('orders-list');
+const siteQr=document.getElementById('site-qr');
+const siteLink=document.getElementById('site-link');
+const siteUrlInput=document.getElementById('site-url-input');
+const siteQrBtn=document.getElementById('site-qr-btn');
+
+const WA_NUMBER='919416047176';
+const UPI_ID='your-upi-id@upi';
+const PAYEE_NAME='Suvidha Bazar Bakery';
+const ORDERS_API='/api/orders';
+
+let cart={};
+
+AOS.init({duration:700,once:true,offset:70,easing:'ease-out-cubic'});
+document.getElementById('year').textContent=new Date().getFullYear();
+
+ham.addEventListener('click',()=>nav.classList.toggle('active'));
+document.querySelectorAll('.nav a[href^="#"]').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('active')));
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  header.classList.toggle('scrolled',y>25);
+  const d=document.documentElement;
+  progress.style.width=((d.scrollTop/(d.scrollHeight-d.clientHeight))*100)+'%';
+  document.querySelectorAll('section[id]').forEach(s=>{
+    const t=s.offsetTop-130,b=t+s.offsetHeight,id=s.id;
+    const n=document.querySelector('.nav a[href="#'+id+'"]');
+    if(n) n.classList.toggle('active',y>=t&&y<b);
+  });
+},{passive:true});
+
+function initWebsiteQR(url){
+  const u=(url||'').trim();
+  if(!u) return;
+  siteQr.src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent(u);
+  siteLink.href=u;
+  siteLink.textContent=u;
+  siteUrlInput.value=u;
+}
+
+function flash(msg){
+  toast.textContent=msg;
+  toast.classList.add('show');
+  clearTimeout(flash.t);
+  flash.t=setTimeout(()=>toast.classList.remove('show'),1700);
+}
+
+document.getElementById('reserve-form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const f=e.currentTarget;
+  if(!f.checkValidity()){flash('Please fill required details');return;}
+  flash('Booking request sent');
+  f.reset();
+});
+
+document.querySelectorAll('.poster img, .g-item img').forEach(img=>{
+  img.addEventListener('click',()=>{lbImg.src=img.src;lightbox.classList.add('active');});
+});
+lbClose.addEventListener('click',()=>lightbox.classList.remove('active'));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.classList.remove('active');});
+
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const c=btn.dataset.cat;
+  document.querySelectorAll('.g-item').forEach(i=>i.classList.toggle('hide',!(c==='all'||i.dataset.cat===c)));
+}));
+
+function cartArray(){return Object.values(cart);}
+function cartTotal(){return cartArray().reduce((s,i)=>s+i.price*i.qty,0);}
+
+function renderCart(){
+  const arr=cartArray();
+  if(!arr.length){
+    cartItemsEl.innerHTML='<p class="small">Cart is empty.</p>';
+  }else{
+    cartItemsEl.innerHTML=arr.map(i=>`<div class="citem"><div><div class="cname">${i.name}</div><div class="cmeta">Rs ${i.price} each</div></div><div><div class="cqty"><button data-act="dec" data-id="${i.id}">-</button><span>${i.qty}</span><button data-act="inc" data-id="${i.id}">+</button></div><div style="text-align:right;font-weight:700">Rs ${i.price*i.qty}</div></div></div>`).join('');
+  }
+  const total=cartTotal();
+  cartTotalEl.textContent='Rs '+total;
+  const count=arr.reduce((s,i)=>s+i.qty,0);
+  cartCountFab.textContent=count;
+  cartCountInline.textContent=count;
+}
+
+function addItem(id,name,price){
+  if(!cart[id]) cart[id]={id,name,price,qty:0};
+  cart[id].qty+=1;
+  renderCart();
+  flash(name+' added to cart');
+}
+
+document.querySelectorAll('.add-cart').forEach(btn=>btn.addEventListener('click',()=>{
+  const card=btn.closest('.fcard');
+  addItem(card.dataset.id,card.dataset.name,Number(card.dataset.price));
+}));
+
+cartItemsEl.addEventListener('click',e=>{
+  const b=e.target.closest('button');
+  if(!b)return;
+  const id=b.dataset.id;
+  if(!cart[id])return;
+  if(b.dataset.act==='inc') cart[id].qty+=1;
+  if(b.dataset.act==='dec') cart[id].qty-=1;
+  if(cart[id].qty<=0) delete cart[id];
+  renderCart();
+});
+
+function openCart(){cartPanel.classList.add('open');}
+function closeCart(){cartPanel.classList.remove('open');}
+cartFab.addEventListener('click',openCart);
+openCartBtn.addEventListener('click',openCart);
+closeCartBtn.addEventListener('click',closeCart);
+
+function buildPaymentQR(){
+  const total=cartTotal();
+  payTotalText.textContent='Total: Rs '+total;
+  const upi=`upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${total}&cu=INR&tn=${encodeURIComponent('Food order payment')}`;
+  payQr.src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='+encodeURIComponent(upi);
+}
+
+checkoutBtn.addEventListener('click',()=>{
+  if(!cartArray().length){flash('Add items first');return;}
+  buildPaymentQR();
+  payModal.classList.add('open');
+});
+closePayBtn.addEventListener('click',()=>payModal.classList.remove('open'));
+payModal.addEventListener('click',e=>{if(e.target===payModal)payModal.classList.remove('open');});
+
+async function saveOrderToBackend(name,phone){
+  const payload={
+    customer_name:name||'Customer',
+    customer_phone:phone||'',
+    items:cartArray().map(i=>({name:i.name,qty:i.qty,price:i.price,subtotal:i.price*i.qty})),
+    total:cartTotal(),
+    payment_mode:'QR',
+    payment_status:'Pending Screenshot'
+  };
+  try{
+    const r=await fetch(ORDERS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    return r.ok;
+  }catch(e){
+    return false;
+  }
+}
+
+async function loadOrders(){
+  try{
+    const r=await fetch(ORDERS_API);
+    if(!r.ok){ordersList.innerHTML='Start backend server to view orders.';return;}
+    const data=await r.json();
+    if(!data.length){ordersList.innerHTML='No orders yet.';return;}
+    ordersList.innerHTML=data.slice(0,20).map(o=>{
+      const items=(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join(', ');
+      return `<div class="citem"><div><div class="cname">${o.customer_name} (${o.customer_phone||'N/A'})</div><div class="cmeta">${o.created_at}</div><div class="small">${items}</div></div><div><strong>Rs ${o.total}</strong><div class="small">${o.payment_status}</div></div></div>`;
+    }).join('');
+  }catch(e){
+    ordersList.innerHTML='Start backend server to view orders.';
+  }
+}
+
+waOrderBtn.addEventListener('click',async ()=>{
+  if(!cartArray().length){flash('Cart is empty');return;}
+  const name=(custName.value||'Customer').trim();
+  const phone=(custPhone.value||'').trim();
+  const saved=await saveOrderToBackend(name,phone);
+  if(saved){flash('Order saved. Opening WhatsApp...');loadOrders();}
+  else{flash('Order not saved (backend not running).');}
+
+  const lines=cartArray().map(i=>`- ${i.name} x ${i.qty} = Rs ${i.price*i.qty}`);
+  const msg=['Hello Suvidha Bazar Bakery,','I placed an order:',...lines,`Total: Rs ${cartTotal()}`,`Name: ${name}`,`Phone: ${phone||'N/A'}`,'I have completed payment. Sending payment screenshot now.'].join('\n');
+  window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
+});
+
+refreshOrdersBtn.addEventListener('click',loadOrders);
+siteQrBtn.addEventListener('click',()=>{
+  const v=(siteUrlInput.value||'').trim();
+  if(!/^https?:\/\//i.test(v)){flash('Enter full URL with http/https');return;}
+  initWebsiteQR(v);
+});
+const defaultSite=(location.protocol.startsWith('http')?location.href:'http://localhost:5000');
+initWebsiteQR(defaultSite);
+loadOrders();
+renderCart();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
