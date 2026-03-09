@@ -87,9 +87,24 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
 .copy{text-align:center;padding-top:.8rem;border-top:1px solid rgba(255,255,255,.1)}
 .toast{position:fixed;right:18px;bottom:18px;background:#1f1f1f;color:#fff;padding:.7rem .9rem;border-radius:10px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:3000}
 .toast.show{opacity:1;transform:translateY(0)}
+.live-order{position:fixed;left:18px;bottom:18px;background:#fff;color:#222;padding:.7rem .9rem;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.25s;pointer-events:none;z-index:3001;border:1px solid #f0dcdc;max-width:320px}
+.live-order.show{opacity:1;transform:translateY(0)}
+.confetti-layer{position:fixed;inset:0;pointer-events:none;z-index:2999;overflow:hidden}
+.confetti{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;opacity:.95;animation:fall 900ms linear forwards}
+@keyframes fall{to{transform:translateY(65vh) rotate(420deg);opacity:0}}
+.feedback-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.feedback-card{background:#fff;border-radius:14px;padding:1rem;box-shadow:var(--shadow)}
+.fb-list{display:grid;gap:.6rem;max-height:360px;overflow:auto;padding-right:.2rem}
+.fb-item{border:1px solid #eee;border-radius:10px;padding:.6rem;background:#fffcfc}
+.fb-head{display:flex;justify-content:space-between;gap:.6rem;font-weight:600}
+.stars{color:#d18b00;font-size:.85rem}
 .order-wrap{background:#fff;border-radius:14px;padding:1rem;box-shadow:var(--shadow)}
 .order-head{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap;margin-bottom:.8rem}
 .order-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem}
+.quick-add{display:grid;grid-template-columns:1fr 110px auto auto;gap:.55rem;align-items:end;margin-bottom:.9rem;background:#fff8f8;border:1px solid #f0dcdc;border-radius:12px;padding:.7rem}
+.quick-add label{display:block;font-size:.78rem;color:#666;margin-bottom:.2rem}
+.quick-add select,.quick-add input{width:100%;padding:.58rem;border:1px solid #ddd;border-radius:9px;font-family:inherit}
+.quick-add .price-chip{display:inline-flex;align-items:center;justify-content:center;padding:.58rem .8rem;border-radius:9px;background:#fff;color:var(--red);font-weight:700;border:1px solid #f0dcdc;min-height:40px}
 .fcard{background:#fff8f8;border:1px solid #f0dcdc;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
 .fcard img{width:100%;height:150px;object-fit:cover}
 .fbody{padding:.7rem}
@@ -109,6 +124,12 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
 .cqty{display:flex;align-items:center;gap:.3rem}
 .cqty button{width:24px;height:24px;border:1px solid #ddd;background:#fff;border-radius:6px;cursor:pointer}
 .cart-bottom{padding:.85rem;border-top:1px solid #eee}
+.cart-note{margin-bottom:.7rem}
+.cart-note label{display:block;font-size:.86rem;font-weight:600;margin-bottom:.35rem}
+.cart-note textarea{width:100%;min-height:74px;padding:.62rem;border:1px solid #ddd;border-radius:9px;font-family:inherit;resize:vertical}
+.cart-note textarea:focus{outline:none;border-color:var(--red)}
+.cart-note input{width:100%;margin-top:.45rem;padding:.62rem;border:1px solid #ddd;border-radius:9px;font-family:inherit}
+.cart-note input:focus{outline:none;border-color:var(--red)}
 .pay-modal{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;z-index:2600;padding:1rem}
 .pay-modal.open{display:flex}
 .pay-card{background:#fff;border-radius:14px;max-width:520px;width:100%;padding:1rem;box-shadow:var(--shadow)}
@@ -117,7 +138,7 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
 .small{font-size:.83rem;color:#666}
 @media(max-width:768px){.pay-grid{grid-template-columns:1fr}.pay-grid img{margin:auto}}
 @media(max-width:980px){.reserve-wrap{grid-template-columns:1fr}}
-@media(max-width:768px){.nav{position:absolute;top:62px;right:0;background:#fff;width:100%;display:flex;flex-direction:column;padding:1rem 0;transform:translateY(-170%);transition:.25s;box-shadow:0 8px 20px rgba(0,0,0,.1)}.nav.active{transform:translateY(0)}.ham{display:block}.form-grid{grid-template-columns:1fr}.hero h1{font-size:2.35rem}.poster img{aspect-ratio:3/4}}
+@media(max-width:768px){.nav{position:absolute;top:62px;right:0;background:#fff;width:100%;display:flex;flex-direction:column;padding:1rem 0;transform:translateY(-170%);transition:.25s;box-shadow:0 8px 20px rgba(0,0,0,.1)}.nav.active{transform:translateY(0)}.ham{display:block}.form-grid{grid-template-columns:1fr}.hero h1{font-size:2.35rem}.poster img{aspect-ratio:3/4}.quick-add{grid-template-columns:1fr 1fr}.quick-add .qa-dish{grid-column:1/-1}.quick-add .btn{grid-column:1/-1}.feedback-wrap{grid-template-columns:1fr}.live-order{left:12px;right:12px;max-width:none}}
 </style>
 </head>
 <body>
@@ -132,6 +153,7 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
     <li><a href="#menu-images">Menu Images</a></li>
     <li><a href="#gallery">Gallery</a></li>
     <li><a href="#reserve">Reservation</a></li>
+    <li><a href="#feedback">Feedback</a></li>
     <li><a href="#qr">QR Connect</a></li>
     <li><a href="tel:+919416047176" class="btn btn-red">Order</a></li>
   </ul>
@@ -163,6 +185,24 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
     <div class="order-head">
       <h3>Popular Items</h3>
       <button class="btn btn-red" id="open-cart">Open Cart (<span id="cart-count-inline">0</span>)</button>
+    </div>
+    <div class="quick-add" id="quick-add-menu">
+      <div class="qa-dish">
+        <label for="menu-select">Select Any Menu Item</label>
+        <select id="menu-select"></select>
+      </div>
+      <div>
+        <label for="menu-qty">Qty</label>
+        <input id="menu-qty" type="number" min="1" value="1">
+      </div>
+      <div>
+        <label>Price</label>
+        <div class="price-chip" id="menu-price">Rs 0</div>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button class="btn btn-red" id="add-selected-item">Add Selected</button>
+      </div>
     </div>
     <div class="order-grid" id="order-grid">
       <article class="fcard" data-id="1" data-name="Margherita Pizza (Small)" data-price="109"><img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=900&q=80" alt="Margherita"><div class="fbody"><h4>Margherita Pizza (Small)</h4><p>Loaded with cheese</p><div class="frow"><span class="fprice">Rs 109</span><button class="btn btn-red add-cart">Add</button></div></div></article>
@@ -268,6 +308,11 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
   <div class="cart-top"><h3>Your Cart</h3><button class="btn btn-white" id="close-cart">Close</button></div>
   <div class="cart-items" id="cart-items"></div>
   <div class="cart-bottom">
+    <div class="cart-note">
+      <label for="custom-dish-input">Dish not listed? Type it here</label>
+      <textarea id="custom-dish-input" placeholder="Example: Add 1 Veg Burger, no onion"></textarea>
+      <input id="custom-dish-amount" type="number" min="0" step="1" placeholder="Custom dish amount (Rs)">
+    </div>
     <div style="display:flex;justify-content:space-between;margin-bottom:.6rem"><strong>Total</strong><strong id="cart-total">Rs 0</strong></div>
     <button class="btn btn-red" style="width:100%" id="checkout-btn">Proceed to Payment</button>
   </div>
@@ -299,6 +344,24 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
     <div id="orders-list" class="small">No orders loaded yet.</div>
   </div>
 </section>
+<section class="section" id="feedback">
+  <div class="head" data-aos="fade-up"><h2>Customer Feedback</h2><p>Everyone can see reviews. Only the person can submit their own feedback.</p></div>
+  <div class="feedback-wrap">
+    <div class="feedback-card" data-aos="fade-right">
+      <h3>Share Your Experience</h3>
+      <form id="feedback-form" novalidate>
+        <div class="fg"><label>Name</label><input id="fb-name" type="text" required placeholder="Your name"></div>
+        <div class="fg"><label>Rating</label><select id="fb-rating" required><option value="">Choose</option><option value="5">5 - Excellent</option><option value="4">4 - Very Good</option><option value="3">3 - Good</option><option value="2">2 - Average</option><option value="1">1 - Poor</option></select></div>
+        <div class="fg"><label>Message</label><textarea id="fb-message" rows="4" required placeholder="Tell others about food, service, and experience"></textarea></div>
+        <button class="btn btn-red submit" type="submit"><i class="fas fa-star"></i> Submit Feedback</button>
+      </form>
+    </div>
+    <div class="feedback-card" data-aos="fade-left">
+      <h3>Public Feedback Wall</h3>
+      <div id="feedback-list" class="fb-list small">No feedback yet.</div>
+    </div>
+  </div>
+</section>
 <footer class="footer">
   <div class="ft-grid">
     <div><h4>Suvidha Bazar Bakery</h4><p>The Name of Quality. Fast delivery and party bookings.</p></div>
@@ -309,6 +372,8 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
 </footer>
 <div class="lightbox" id="lightbox"><span class="lb-close" id="lb-close">&times;</span><img id="lb-img" src="" alt="preview"></div>
 <div class="toast" id="toast">Request sent successfully</div>
+<div class="live-order" id="live-order"></div>
+<div class="confetti-layer" id="confetti-layer"></div>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 const header=document.getElementById('header');
@@ -316,6 +381,8 @@ const progress=document.getElementById('progress');
 const nav=document.getElementById('nav');
 const ham=document.getElementById('ham');
 const toast=document.getElementById('toast');
+const liveOrder=document.getElementById('live-order');
+const confettiLayer=document.getElementById('confetti-layer');
 const lightbox=document.getElementById('lightbox');
 const lbImg=document.getElementById('lb-img');
 const lbClose=document.getElementById('lb-close');
@@ -335,17 +402,84 @@ const payTotalText=document.getElementById('pay-total-text');
 const waOrderBtn=document.getElementById('wa-order-btn');
 const custName=document.getElementById('cust-name');
 const custPhone=document.getElementById('cust-phone');
+const customDishInput=document.getElementById('custom-dish-input');
+const customDishAmountInput=document.getElementById('custom-dish-amount');
 const refreshOrdersBtn=document.getElementById('refresh-orders');
 const ordersList=document.getElementById('orders-list');
+const menuSelect=document.getElementById('menu-select');
+const menuQty=document.getElementById('menu-qty');
+const menuPrice=document.getElementById('menu-price');
+const addSelectedItemBtn=document.getElementById('add-selected-item');
+const feedbackForm=document.getElementById('feedback-form');
+const fbName=document.getElementById('fb-name');
+const fbRating=document.getElementById('fb-rating');
+const fbMessage=document.getElementById('fb-message');
+const feedbackList=document.getElementById('feedback-list');
 
 
 
 const WA_NUMBER='919416047176';
 const UPI_ID='your-upi-id@upi';
 const PAYEE_NAME='Suvidha Bazar Bakery';
-const ORDERS_API='/api/orders';
+const API_BASE=(window.__API_BASE__||localStorage.getItem('API_BASE')||'').trim().replace(/\/$/,'');
+const ORDERS_API=(API_BASE?API_BASE:'')+'/api/orders';
+const FEEDBACK_API=(API_BASE?API_BASE:'')+'/api/feedback';
 
 let cart={};
+
+const menuCatalog=[
+  {name:'Aloo Tikki Wrap',price:99},{name:'Vegetable Wrap',price:110},{name:'Mexican Wrap',price:110},{name:'Cheese Tikka Wrap',price:120},{name:'Chilli Paneer Wrap',price:120},{name:'Tandoori Paneer Wrap',price:130},
+  {name:'Aloo Tikki Sub',price:120},{name:'Corn & Peas Sub',price:120},{name:'Mexican Patty Sub',price:120},{name:'Paneer Tikka Sub',price:150},
+  {name:'Plain Maggi',price:50},{name:'Veg Maggi',price:70},{name:'Corn Cheese Maggi',price:90},{name:'Tandoori Maggi',price:100},
+  {name:'Cheese Garlic Bread',price:100},{name:'Stuffed Garlic Bread',price:120},{name:'Garlic Finger',price:120},{name:'Nachos',price:100},
+  {name:'Vegetable Salad',price:100},{name:'Italian Salad',price:120},{name:'Korean Cheese Bun',price:60},{name:'Hot Chocolate Brownie (No Ice Cream)',price:79},{name:'Hot Chocolate Brownie (With Ice Cream)',price:99},
+  {name:'Veg Single Pizza',price:70},{name:'Veg Double Pizza',price:90},{name:'Margherita Pizza (Small)',price:109},{name:'Onion Paneer Pizza (Small)',price:109},
+  {name:'Tandoori Pizza (Small)',price:199},{name:'Garden Delight Pizza (Small)',price:189},{name:'Farm Fresh Pizza (Small)',price:199},{name:'Exotic Paneer Pizza (Small)',price:210},{name:'Ultimate Pizza (Small)',price:210},
+  {name:'Punjabi Tadka Pizza (Small)',price:210},{name:'Mushroom Tikka Pizza (Small)',price:220},{name:'Italian Pizza (Small)',price:220},{name:'Suvidha Special Patty Base Pizza (Small)',price:230},{name:'Suvidha Special Veg Loaded Pizza (Small)',price:280},{name:'Kulhad Pizza',price:139},
+  {name:'Veg Noodles',price:90},{name:'Hakka Noodles',price:120},{name:'Chilly Garlic Noodles',price:120},{name:'Paneer Noodles',price:150},{name:'Manchurian Noodles',price:130},{name:'Schezwan Noodles',price:100},
+  {name:'Veg Momos',price:100},{name:'Crunchy Momos',price:130},{name:'Fried Momos',price:120},
+  {name:'Veg Fried Rice',price:90},{name:'Schezwan Fried Rice',price:100},{name:'Mushroom Fried Rice',price:120},{name:'Paneer Fried Rice',price:120},{name:'Manchurian Fried Rice',price:110},
+  {name:'Cheese Chilly Dry',price:160},{name:'Cheese Chilly Gravy',price:160},{name:'Mushroom Chilly',price:180},{name:'Honey Chilly Potato',price:150},{name:'Honey Chilly Cauliflower',price:130},{name:'Manchurian Dry/Gravy',price:120},{name:'Crispy Corn',price:150},{name:'Veg Salt & Pepper',price:240},
+  {name:'Veg Spring Roll',price:80},{name:'Noodle Spring Roll',price:90},{name:'Cheese Corn Roll',price:150},
+  {name:'Vanilla Shake',price:89},{name:'Strawberry Shake',price:89},{name:'Blueberry Shake',price:89},{name:'Mango Shake',price:89},{name:'Pineapple Shake',price:89},{name:'Butterscotch Shake',price:89},{name:'Bubble Gum Shake',price:89},{name:'Black Currant Shake',price:89},
+  {name:'Truffle Shake',price:120},{name:'Oreo Shake',price:120},{name:'Kit Kat Shake',price:120},{name:'Hazelnut Shake',price:120},{name:'Caramel Shake',price:130},{name:'Paan Shake',price:130},{name:'Brownie Shake',price:140},{name:'Fruit Punch Shake',price:160},{name:'Saffron Cream Shake',price:160},
+  {name:'Lime Soda',price:89},{name:'Mint Mojito',price:99},{name:'Black Mojito',price:99},{name:'Raspberry Mojito',price:119},{name:'Peach Mojito',price:119},{name:'Cucumber Mojito',price:119},{name:'Green Apple Mojito',price:109},{name:'Blue Lagoon',price:109},
+  {name:'Strawberry Lemonade',price:79},{name:'Green Mint Lemonade',price:79},{name:'Orange Lemonade',price:79},{name:'Pineapple Lemonade',price:79},{name:'Kiwi Lemonade',price:89},
+  {name:'Classic Green Tea',price:60},{name:'Honey Lemon Green Tea',price:70},{name:'Lemon Ginger Green Tea',price:70},{name:'Pepper Mint Green Tea',price:80},
+  {name:'Aloo Patties',price:10},{name:'Paneer Patties',price:15},{name:'Veg Patties',price:15},{name:'Grilled Patties',price:20},{name:'Pasta Patties',price:20},{name:'Noodle Patties',price:20},{name:'Soya Chaap Patties',price:20},{name:'Corn Patties',price:20},{name:'Cheese Chilly Patties',price:25},{name:'Cheese Gravy Patties',price:25},{name:'Mushroom Patties',price:25},
+  {name:'Veg Kulcha',price:25},{name:'Aloo Stuffed Grilled Kulcha',price:30},{name:'Paneer Stuffed Grilled Kulcha',price:60},
+  {name:'Tutty Frutty Pastry',price:15},{name:'Choco Pastry',price:15},{name:'Vanilla Pastry',price:20},{name:'Mango Pastry',price:20},{name:'Pineapple Pastry',price:20},{name:'Strawberry Pastry',price:20},{name:'Butterscotch Pastry',price:20},{name:'Pure Chocolate Pastry',price:30},{name:'Black Forest Pastry',price:30},{name:'Hazelnut Pastry',price:35},{name:'Cassata Pastry',price:35},{name:'Fruit Pastry',price:50},{name:'Red Velvet Pastry',price:40},{name:'Oreo Pastry',price:40},{name:'Rajbhog Pastry',price:40},{name:'Truffle Chocolate Pastry',price:50},
+  {name:'Tiramisu',price:150},{name:'Baked Cheese Cake',price:140},{name:'Cheese Cake',price:120},{name:'Opera Cake',price:100},{name:'Mousse Cake',price:120},{name:'Fruit Cup',price:60},{name:'Chocolate Cup',price:60},{name:'Choco Lava',price:70},
+  {name:'Chocolate Doughnut',price:50},{name:'White Chocolate Doughnut',price:60},{name:'Strawberry Doughnut',price:60},{name:'Hazelnut Blast Doughnut',price:70},
+  {name:'Cream Roll',price:20},{name:'Chocolate Cream Roll',price:35},{name:'Butterscotch Cream Roll',price:35},{name:'Red Velvet Roll',price:50},{name:'Jam Roll',price:20},{name:'Chocolate Roll',price:30},{name:'Swiss Roll',price:30}
+];
+
+function loadMenuDropdown(){
+  if(!menuSelect) return;
+  const opts=['<option value="">Select dish from full menu</option>']
+    .concat(menuCatalog.map((item,idx)=>`<option value="${idx}">${item.name} - Rs ${item.price}</option>`));
+  menuSelect.innerHTML=opts.join('');
+  menuPrice.textContent='Rs 0';
+}
+
+function updateSelectedPrice(){
+  const idx=Number(menuSelect.value);
+  if(Number.isNaN(idx) || menuSelect.value===''){menuPrice.textContent='Rs 0';return;}
+  const item=menuCatalog[idx];
+  menuPrice.textContent='Rs '+item.price;
+}
+
+function addSelectedMenuItem(){
+  const idx=Number(menuSelect.value);
+  if(Number.isNaN(idx) || menuSelect.value===''){flash('Select menu dish first');return;}
+  const qty=Math.max(1,Number(menuQty.value||1));
+  const item=menuCatalog[idx];
+  for(let i=0;i<qty;i+=1){
+    addItem('menu-'+item.name,item.name,item.price);
+  }
+  menuQty.value='1';
+}
+
 
 AOS.init({duration:700,once:true,offset:70,easing:'ease-out-cubic'});
 document.getElementById('year').textContent=new Date().getFullYear();
@@ -370,6 +504,74 @@ function flash(msg){
   flash.t=setTimeout(()=>toast.classList.remove('show'),1700);
 }
 
+function celebrateAddToCart(){
+  if(!confettiLayer) return;
+  const colors=['#c5272a','#f4a261','#f6bd60','#84a59d','#6a4c93'];
+  for(let i=0;i<20;i+=1){
+    const piece=document.createElement('span');
+    piece.className='confetti';
+    piece.style.left=(Math.random()*100)+'vw';
+    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+    piece.style.transform=`translateY(0) rotate(${Math.random()*120}deg)`;
+    piece.style.animationDuration=(700+Math.random()*500)+'ms';
+    confettiLayer.appendChild(piece);
+    setTimeout(()=>piece.remove(),1300);
+  }
+}
+
+const liveNames=['Rahul','Neha','Aman','Priya','Riya','Karan','Simran'];
+const livePlaces=['Sector 10','Model Town','City Center','Nearby Area','Main Market'];
+function showLiveOrderToast(){
+  if(!liveOrder || !menuCatalog.length) return;
+  const item=menuCatalog[Math.floor(Math.random()*menuCatalog.length)];
+  const name=liveNames[Math.floor(Math.random()*liveNames.length)];
+  const place=livePlaces[Math.floor(Math.random()*livePlaces.length)];
+  liveOrder.textContent=`${name} from ${place} just ordered ${item.name}`;
+  liveOrder.classList.add('show');
+  clearTimeout(showLiveOrderToast.t);
+  showLiveOrderToast.t=setTimeout(()=>liveOrder.classList.remove('show'),2800);
+}
+
+function escapeHtml(value){
+  return String(value||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('\"','&quot;').replaceAll("'",'&#39;');
+}
+
+async function loadFeedback(){
+  if(!feedbackList) return;
+  try{
+    const r=await fetch(FEEDBACK_API);
+    if(!r.ok){feedbackList.innerHTML='Run backend server to load feedback.';return;}
+    const data=await r.json();
+    if(!data.length){feedbackList.innerHTML='No feedback yet.';return;}
+    feedbackList.innerHTML=data.slice(0,80).map(f=>{
+      const stars='&#9733;'.repeat(Number(f.rating||0))+'&#9734;'.repeat(5-Number(f.rating||0));
+      return `<div class="fb-item"><div class="fb-head"><span>${escapeHtml(f.name||'Customer')}</span><span class="stars">${stars}</span></div><div class="small">${escapeHtml(f.message||'')}</div><div class="small">${escapeHtml(f.created_at||'')}</div></div>`;
+    }).join('');
+  }catch(e){
+    feedbackList.innerHTML='Run backend server to load feedback.';
+  }
+}
+
+if(feedbackForm){
+  feedbackForm.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const name=(fbName?.value||'').trim();
+    const rating=Number(fbRating?.value||0);
+    const message=(fbMessage?.value||'').trim();
+    if(!name || !rating || !message){flash('Please fill feedback details');return;}
+    try{
+      const r=await fetch(FEEDBACK_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,rating,message})});
+      if(!r.ok){flash('Feedback server issue');return;}
+      feedbackForm.reset();
+      flash('Thanks for your feedback!');
+      loadFeedback();
+    }catch(err){
+      flash('Feedback not saved (backend not running)');
+    }
+  });
+}
+
+
 document.getElementById('reserve-form').addEventListener('submit',e=>{
   e.preventDefault();
   const f=e.currentTarget;
@@ -392,7 +594,17 @@ document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',(
 }));
 
 function cartArray(){return Object.values(cart);}
-function cartTotal(){return cartArray().reduce((s,i)=>s+i.price*i.qty,0);}
+function customDishAmount(){ if(!customDishText()) return 0; return Math.max(0,Number(customDishAmountInput?.value||0)); }
+function cartTotal(){return cartArray().reduce((s,i)=>s+i.price*i.qty,0)+customDishAmount();}
+function customDishText(){return (customDishInput?.value||'').trim();}
+function hasAnyOrder(){return cartArray().length>0||customDishText().length>0;}
+function validateCustomAmount(){
+  if(customDishText() && customDishAmount()<=0){
+    flash('Enter custom dish amount for QR payment');
+    return false;
+  }
+  return true;
+}
 
 function renderCart(){
   const arr=cartArray();
@@ -413,12 +625,15 @@ function addItem(id,name,price){
   cart[id].qty+=1;
   renderCart();
   flash(name+' added to cart');
+  celebrateAddToCart();
 }
 
 document.querySelectorAll('.add-cart').forEach(btn=>btn.addEventListener('click',()=>{
   const card=btn.closest('.fcard');
   addItem(card.dataset.id,card.dataset.name,Number(card.dataset.price));
 }));
+menuSelect.addEventListener('change',updateSelectedPrice);
+addSelectedItemBtn.addEventListener('click',addSelectedMenuItem);
 
 cartItemsEl.addEventListener('click',e=>{
   const b=e.target.closest('button');
@@ -430,6 +645,8 @@ cartItemsEl.addEventListener('click',e=>{
   if(cart[id].qty<=0) delete cart[id];
   renderCart();
 });
+customDishInput.addEventListener('input',renderCart);
+customDishAmountInput.addEventListener('input',renderCart);
 
 function openCart(){cartPanel.classList.add('open');}
 function closeCart(){cartPanel.classList.remove('open');}
@@ -445,7 +662,8 @@ function buildPaymentQR(){
 }
 
 checkoutBtn.addEventListener('click',()=>{
-  if(!cartArray().length){flash('Add items first');return;}
+  if(!hasAnyOrder()){flash('Add items first');return;}
+  if(!validateCustomAmount()) return;
   buildPaymentQR();
   payModal.classList.add('open');
 });
@@ -457,6 +675,8 @@ async function saveOrderToBackend(name,phone){
     customer_name:name||'Customer',
     customer_phone:phone||'',
     items:cartArray().map(i=>({name:i.name,qty:i.qty,price:i.price,subtotal:i.price*i.qty})),
+    custom_request:customDishText(),
+    custom_request_amount:customDishAmount(),
     total:cartTotal(),
     payment_mode:'QR',
     payment_status:'Pending Screenshot'
@@ -477,7 +697,8 @@ async function loadOrders(){
     if(!data.length){ordersList.innerHTML='No orders yet.';return;}
     ordersList.innerHTML=data.slice(0,20).map(o=>{
       const items=(o.items||[]).map(i=>`${i.name} x ${i.qty}`).join(', ');
-      return `<div class="citem"><div><div class="cname">${o.customer_name} (${o.customer_phone||'N/A'})</div><div class="cmeta">${o.created_at}</div><div class="small">${items}</div></div><div><strong>Rs ${o.total}</strong><div class="small">${o.payment_status}</div></div></div>`;
+      const custom=o.custom_request?`<div class="small"><strong>Custom:</strong> ${o.custom_request} (Rs ${o.custom_request_amount||0})</div>`:'';
+      return `<div class="citem"><div><div class="cname">${o.customer_name} (${o.customer_phone||'N/A'})</div><div class="cmeta">${o.created_at}</div><div class="small">${items}</div>${custom}</div><div><strong>Rs ${o.total}</strong><div class="small">${o.payment_status}</div></div></div>`;
     }).join('');
   }catch(e){
     ordersList.innerHTML='Start backend server to view orders.';
@@ -485,7 +706,8 @@ async function loadOrders(){
 }
 
 waOrderBtn.addEventListener('click',async ()=>{
-  if(!cartArray().length){flash('Cart is empty');return;}
+  if(!hasAnyOrder()){flash('Cart is empty');return;}
+  if(!validateCustomAmount()) return;
   const name=(custName.value||'Customer').trim();
   const phone=(custPhone.value||'').trim();
   const saved=await saveOrderToBackend(name,phone);
@@ -493,16 +715,26 @@ waOrderBtn.addEventListener('click',async ()=>{
   else{flash('Order not saved (backend not running).');}
 
   const lines=cartArray().map(i=>`- ${i.name} x ${i.qty} = Rs ${i.price*i.qty}`);
-  const msg=['Hello Suvidha Bazar Bakery,','I placed an order:',...lines,`Total: Rs ${cartTotal()}`,`Name: ${name}`,`Phone: ${phone||'N/A'}`,'I have completed payment. Sending payment screenshot now.'].join('\n');
+  const custom=customDishText();
+  const msg=['Hello Suvidha Bazar Bakery,','I placed an order:',...lines,custom?`Custom item request: ${custom} (Rs ${customDishAmount()})`:'',`Total: Rs ${cartTotal()}`,`Name: ${name}`,`Phone: ${phone||'N/A'}`,'I have completed payment. Sending payment screenshot now.','Thank you for choosing Suvidha Bazar Bakery. We will provide you the best service. Please wait a little while our team confirms your order.'].filter(Boolean).join('\n');
   window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
 });
 
 refreshOrdersBtn.addEventListener('click',loadOrders);
+loadMenuDropdown();
 loadOrders();
+loadFeedback();
 renderCart();
+setTimeout(showLiveOrderToast,2500);
+setInterval(showLiveOrderToast,12000);
 </script>
 </body>
 </html>
+
+
+
+
+
 
 
 

@@ -1,0 +1,9 @@
+streamlit
+pdfplumber
+python-docx
+streamlit-lottie
+requests
+
+flask
+pymysql
+flask-cors
