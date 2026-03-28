@@ -176,7 +176,7 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
     <div class="top-item"><h4>Order Numbers</h4><p><a href="tel:+919416047176">+91 94160 47176</a><br><a href="tel:+918708122228">+91 87081 22228</a></p></div>
     <div class="top-item"><h4>Instagram</h4><p>@Suvidha.Bazar</p></div>
     <div class="top-item"><h4>Facebook</h4><p>Suvidha.Bazar</p></div>
-    <div class="top-item"><h4>Address</h4><p>Suvidha Bazar Bakery, Haryana (replace with exact shop address).</p></div>
+    <div class="top-item"><h4>Address</h4><p>Near Shri Durga Mandir, Sirsa, Haryana, PIN - 125104</p></div>
   </div>
 </section>
 <section class="section" id="order-food">
@@ -298,8 +298,8 @@ header.scrolled{background:rgba(255,255,255,.9);backdrop-filter:blur(10px);box-s
     </div>
     <div class="qr-card" data-aos="zoom-in" data-aos-delay="60">
       <h3>Google Map QR</h3>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DSuvidha%2BBazar%2BBakery" alt="Google Map QR">
-      <p><a href="https://maps.google.com/?q=Suvidha+Bazar+Bakery" target="_blank">Open Location on Google Maps</a></p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fmaps.google.com%2F%3Fq%3DNear%2BShri%2BDurga%2BMandir%2BSirsa%2BHaryana%2B125104" alt="Google Map QR">
+      <p><a href="https://maps.google.com/?q=Near+Shri+Durga+Mandir+Sirsa+Haryana+125104" target="_blank">Open Location on Google Maps</a></p>
     </div>
   </div>
 </section>
@@ -421,7 +421,8 @@ const feedbackList=document.getElementById('feedback-list');
 const WA_NUMBER='919416047176';
 const UPI_ID='your-upi-id@upi';
 const PAYEE_NAME='Suvidha Bazar Bakery';
-const API_BASE=(window.__API_BASE__||localStorage.getItem('API_BASE')||'').trim().replace(/\/$/,'');
+const DEFAULT_API_BASE='https://suvidha-bazar.onrender.com';
+const API_BASE=(window.__API_BASE__||localStorage.getItem('API_BASE')||DEFAULT_API_BASE).trim().replace(/\/$/,'');
 const ORDERS_API=(API_BASE?API_BASE:'')+'/api/orders';
 const FEEDBACK_API=(API_BASE?API_BASE:'')+'/api/feedback';
 
